@@ -1,4 +1,6 @@
 using Lanches.Context;
+using Lanches.Repositories;
+using Lanches.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,9 @@ var connetionString = builder.Configuration.GetConnectionString("DefaultConnecti
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString)));
+
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<ILancheRepository, LancheRepository>();
 
 var app = builder.Build();
 
