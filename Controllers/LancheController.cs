@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Lanches.Controllers
 {
-    [Route("[controller]")]
+
     public class LancheController : Controller
     {
         private readonly ILancheRepository _lancheRepository;
