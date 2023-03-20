@@ -26,8 +26,8 @@ namespace Lanches.Controllers
 
         public IActionResult Index()
         {
-            var items = _carrinhoCompra.GetCarrinhoCompraItems();
-            _carrinhoCompra.CarrinhoCompraItems = items;
+            var itens = _carrinhoCompra.GetCarrinhoCompraItems();
+            _carrinhoCompra.CarrinhoCompraItems = itens;
 
             var carrinhoCompraVM = new CarrinhoCompraViewModel
             {
@@ -38,9 +38,9 @@ namespace Lanches.Controllers
             return View(carrinhoCompraVM);
         }
 
-        public IActionResult AdicionarAoCarrinho(int lancheId)
+        public RedirectToActionResult AdicionarItemNoCarrinhoCompra(int Id)
         {
-            var lancheSelecionado = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == lancheId);
+            var lancheSelecionado = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == Id);
             if (lancheSelecionado != null)
             {
                 _carrinhoCompra.AdicionarAoCarrinho(lancheSelecionado);
@@ -48,7 +48,7 @@ namespace Lanches.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult RemoverDoCarrinho(int lancheId)
+        public RedirectToActionResult RemoverItemDoCarrinhoCompra(int lancheId)
         {
             var lancheSelecionado = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == lancheId);
             if (lancheSelecionado != null)
@@ -57,6 +57,8 @@ namespace Lanches.Controllers
             }
             return RedirectToAction("Index");
         }
+
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

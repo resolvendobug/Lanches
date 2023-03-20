@@ -44,6 +44,15 @@ namespace Lanches.Controllers
             return View(lanchesListViewModel);
         }
 
+        public IActionResult Details(int id)
+        {
+            var lanche = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == id);
+            if(lanche == null){
+                return NotFound();
+            }
+            return View(lanche);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
