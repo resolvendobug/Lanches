@@ -30,11 +30,8 @@ namespace Lanches.Controllers
                 lanches = _lancheRepository.Lanches.OrderBy(l => l.Id);
                 categoriaAtual = "Todos os lanches";
             }else {
-                if(string.Equals("Normal", categoria, StringComparison.OrdinalIgnoreCase)){
-                    lanches = _lancheRepository.Lanches.Where(l => l.Categoria.Nome.Equals("Normal")).OrderBy(l => l.Nome);
-                }else{
-                    lanches = _lancheRepository.Lanches.Where(l => l.Categoria.Nome.Equals("Natural")).OrderBy(l => l.Nome);
-                }
+                
+                lanches = _lancheRepository.Lanches.Where(l => l.Categoria.Nome.Equals(categoria)).OrderBy(l => l.Nome);
                 categoriaAtual = categoria;
             }
 
