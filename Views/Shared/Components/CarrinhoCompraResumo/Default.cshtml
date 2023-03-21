@@ -2,7 +2,9 @@
 
 @if(Model.CarrinhoCompra.CarrinhoCompraItems.Count > 0){
     <a asp-controller="CarrinhoCompra" asp-action="Index">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="badge badge-pill badge-danger">@Model.CarrinhoCompra.CarrinhoCompraItems.Count</span>
+        <span class="badge badge-pill text-bg-warning">
+            <svg bootstrap-icon="Cart4" width="24" height="24" aria-label="Cart4"></svg>
+            @Model.CarrinhoCompra.CarrinhoCompraItems.Count
+        </span>
     </a>
 }

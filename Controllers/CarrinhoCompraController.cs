@@ -48,9 +48,9 @@ namespace Lanches.Controllers
             return RedirectToAction("Index");
         }
 
-        public RedirectToActionResult RemoverItemDoCarrinhoCompra(int lancheId)
+        public RedirectToActionResult RemoverItemDoCarrinhoCompra(int Id)
         {
-            var lancheSelecionado = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == lancheId);
+            var lancheSelecionado = _lancheRepository.Lanches.FirstOrDefault(l => l.Id == Id);
             if (lancheSelecionado != null)
             {
                 _carrinhoCompra.RemoverDoCarrinho(lancheSelecionado);

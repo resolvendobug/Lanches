@@ -26,8 +26,9 @@
                         <td class="text-right">@item.Lanche.Preco.ToString("c")</td>
                         <td class="text-right">@((item.Quantidade * item.Lanche.Preco).ToString("c"))</td>
                         <td class="text-center">
-                            <a asp-action="RemoverDoCarrinho" asp-route-lancheId="@item.Lanche.Id" class="btn btn-danger">
-                                <i class="fa fa-trash-o"></i>
+                            <a  asp-controller="CarrinhoCompra" asp-action="RemoverItemDoCarrinhoCompra" asp-route-Id="@item.Lanche.Id" class="btn btn-danger">
+                                
+                                <svg bootstrap-icon="Trash" width="24" height="24" aria-label="Trash"></svg>
                             </a>
                         </td>
                     </tr>
@@ -36,7 +37,7 @@
             <tfoot>
                 <tr>
                     <td colspan="3" class="text-right">Total:</td>
-                    <td class="text-right">@Model.CarrinhoCompraTotal.ToString("c")</td>
+                    <td colspan="2" class="text-right">@Model.CarrinhoCompraTotal.ToString("c")</td>
                 </tr>
             </tfoot>
         </table>
