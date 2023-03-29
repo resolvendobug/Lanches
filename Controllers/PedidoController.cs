@@ -31,7 +31,39 @@ namespace Lanches.Controllers
         [HttpPost]
         public IActionResult Checkout(Pedido pedido)
         {
-            return View();
+            int TotalItensPedido = 0;
+            decimal precoTotalPedido = 0.0m;
+
+            List<CarrinhoCompraItem> items = _carrinhoCompra.GetCarrinhoCompraItems();
+            _carrinhoCompra.CarrinhoCompraItems = items;
+
+            if(_carrinhoCompra.CarrinhoCompraItems.Count == 0)
+            {
+                ModelState.AddModelError("", "Seu carrinho está vazio, adicione um lanche");
+            }
+
+            foreach (var item in items)
+            {
+                TotalItensPedido += item.Quantidade;
+                precoTotalPedido += (item.Lanche.Preco * item.Quantidade);
+            }
+
+            pedido.TotalItensPedido = TotalItensPedido;
+            pedido.PedidoTotal = precoTotalPedido;
+
+            if (ModelState.IsValid)
+            {
+                _pedidoRepository.CriarPedido(pedido);
+
+                ViewBag.CheckoutCompletoMensagem = "Obrigado pelo seu pedido :)";
+                ViewBag.TotalPedido = _carrinhoCompra.GetCarrinhoCompraTotal();
+
+                _carrinhoCompra.LimparCarrinho();
+                return View("~/Views/Pedido/CheckoutCompleto.cshtml", pedido);
+            }
+
+            return View(pedido);    
+
         }
     }
 }
