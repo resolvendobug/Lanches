@@ -40,7 +40,7 @@ namespace Lanches.Controllers
 
                 if(result.Succeeded)
                 {
-                    if(!string.IsNullOrEmpty(loginVM.ReturnUrl))
+                    if(string.IsNullOrEmpty(loginVM.ReturnUrl))
                     {
                         return RedirectToAction("Index", "Home");
                     }
@@ -51,6 +51,38 @@ namespace Lanches.Controllers
             ModelState.AddModelError("", "Falha ao realizar o login!!");
             return View(loginVM);
            
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(LoginViewModel registroVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = registroVM.UserName };
+                var result = await _userManager.CreateAsync(user, registroVM.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else{
+                    ModelState.AddModelError("Registro", "Falha ao realizar o registro!!");
+                }
+            }
+            return View(registroVM);
+        }
+
+        public async Task<IActionResult> Logout(){
+            HttpContext.Session.Clear();
+            HttpContext.User = null;
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
