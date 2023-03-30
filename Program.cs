@@ -2,6 +2,7 @@ using Lanches.Context;
 using Lanches.Models;
 using Lanches.Repositories;
 using Lanches.Repositories.Interfaces;
+using Lanches.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,9 +43,17 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+
 builder.Services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));    
+});
+//var seedUserRoleInitial = builder.Services.GetRequiredService<ISeedUserRoleInitial>();
 
 var app = builder.Build();
 
@@ -55,8 +64,12 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+    var seedUserRoleInitial = services.GetRequiredService<ISeedUserRoleInitial>();
     context.Database.Migrate();
+    seedUserRoleInitial.SeedRoles();
+    seedUserRoleInitial.SeedUsers();
 }
+
 
 
 // Configure the HTTP request pipeline.
@@ -71,6 +84,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.UseSession();
 app.UseAuthentication();
