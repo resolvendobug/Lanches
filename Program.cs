@@ -6,11 +6,17 @@ using Lanches.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddPaging(options => {
+    options.ViewName = "Bootstrap5";
+    options.PageParameterName = "pageindex";
+});
 
 //add memory cache
 builder.Services.AddMemoryCache();
