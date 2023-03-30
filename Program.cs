@@ -77,6 +77,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "categoriaFiltro",
     pattern: "Lanche/{action}/{categoria?}",
     defaults: new { Controller = "Lanche", action = "List" });
