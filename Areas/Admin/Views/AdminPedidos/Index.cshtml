@@ -1,4 +1,4 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<Lanches.Models.Pedido>
+﻿@model PagingList<Lanches.Models.Pedido>
 
 @{
     ViewData["Title"] = "Index";
@@ -15,13 +15,17 @@
 
 <p>Total de Pedidos: @Model.TotalRecordCount</p>
 
-<div>
-    <vc:pager paging-list="@Model" ></vc:pager>
-</div>
+
+
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<nav aria-label="Products navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
 <table class="table">
     <thead>
         <tr>
@@ -106,3 +110,7 @@
 }
     </tbody>
 </table>
+
+<nav aria-label="Products navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>

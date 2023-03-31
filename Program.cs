@@ -10,13 +10,7 @@ using ReflectionIT.Mvc.Paging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
-builder.Services.AddPaging(options => {
-    options.ViewName = "Bootstrap5";
-    options.PageParameterName = "pageindex";
-});
 
 //add memory cache
 builder.Services.AddMemoryCache();
@@ -44,6 +38,14 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 3;
     options.Password.RequiredUniqueChars = 1;
    
+});
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddPaging(options => {
+    options.ViewName = "Bootstrap5";
+    options.PageParameterName = "pageindex";
 });
 
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
