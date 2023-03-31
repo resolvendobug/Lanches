@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Lanches.Models.Lanche>
+﻿@model PagingList<Lanches.Models.Lanche>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +6,23 @@
 
 <h1>Index</h1>
 
+<form method="get" class="form-inline">
+    <input name="filter" class="form-control" placeholder="filtro" value="@Model.RouteValue["Filter"]" />
+    <button type="submit" class="btn btn-info">
+        <span class="glyphicon glyphicon-search"></span>Procurar
+    </button>
+</form>
+
+<p>Total de Lanches: @Model.TotalRecordCount</p>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<nav aria-label="Products navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
+
 <table class="table">
     <thead>
         <tr>
@@ -81,3 +95,7 @@
 }
     </tbody>
 </table>
+
+<nav aria-label="Products navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
