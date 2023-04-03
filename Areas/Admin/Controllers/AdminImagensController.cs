@@ -28,5 +28,57 @@ namespace Lanches.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
+        {
+            if(files == null || files.Count == 0)
+            {
+               ViewData["Erro"] = "Error: Arquivo(s) não selecionado(s)";
+                return View(ViewData);
+            }
+
+            if(files.Count > 10)
+            {
+                ViewData["Erro"] = "Error: Limite de 10 arquivos por vez";
+                return View(ViewData);
+            }
+
+            long size = files.Sum(f => f.Length);
+
+            var filePathsName = new List<string>();
+            
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _myConfig.NomePastaImagensProdutos);
+
+            foreach(var formFile in files)
+            {
+                if(formFile.Length > 0)
+                {
+                    if(formFile.FileName.Contains(".jpg") || formFile.FileName.Contains(".png") || formFile.FileName.Contains(".gif"))
+                    {
+                        var fileNameWithPath = string.Concat(filePath,"\\", formFile.FileName);
+
+                        filePathsName.Add(fileNameWithPath);
+
+                        using(var stream = new FileStream(Path.Combine(filePath, formFile.FileName), FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+                    }
+                    else
+                    {
+                        ViewData["Erro"] = "Error: Arquivo(s) não suportado(s)";
+                        return View(ViewData);
+                    }
+                 
+                }
+            }
+
+            ViewData["Resultado"] = $"{files.Count} arquivo(s) carregado(s) com sucesso! "+
+                                    $" Tamanho total: {size} bytes";
+
+            ViewBag.Arquivos = filePathsName;
+
+            return View(ViewData);
+        }
     }
 }
