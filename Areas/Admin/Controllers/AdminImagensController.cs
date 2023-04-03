@@ -80,5 +80,26 @@ namespace Lanches.Areas.Admin.Controllers
 
             return View(ViewData);
         }
+
+        public IActionResult GetImagens()
+        {
+            FileManagerModel model = new FileManagerModel();
+            var userImagensPath = Path.Combine(_hostingEnvironment.WebRootPath, _myConfig.NomePastaImagensProdutos);
+
+            DirectoryInfo dir = new DirectoryInfo(userImagensPath);
+
+            FileInfo[] files = dir.GetFiles();
+
+            model.PathImagesProduto = _myConfig.NomePastaImagensProdutos;
+
+            if(files.Length == 0)
+            {
+                ViewData["Erro"] = $"Error: Nenhum arquivo encontrado na pasta {userImagensPath}";
+            }
+           
+           model.Files = files;
+
+            return View(model);
+        }
     }
 }
