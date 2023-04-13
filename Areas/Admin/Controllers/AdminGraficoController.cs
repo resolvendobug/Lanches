@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Lanches.Areas.Admin.Controllers
 {
-    [Route("[controller]")]
+    [Area("Admin")]
     public class AdminGraficoController : Controller
     {
 
@@ -26,17 +26,17 @@ namespace Lanches.Areas.Admin.Controllers
             return Json(lanchesVendasTotais);
         }
 
-        public IActionResult Index(int dias)
+        public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult VendasMensal(int dias)
+        public IActionResult VendasMensal()
         {
             return View();
         }
         
-        public IActionResult VendasSemanal(int dias)
+        public IActionResult VendasSemanal()
         {
             return View();
         }

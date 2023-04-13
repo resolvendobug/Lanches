@@ -22,7 +22,7 @@ namespace Lanches.Areas.Admin.Services
             var lanches = (from pd in _context.PedidoDetalhes
                             join l in _context.Lanches on pd.LancheId equals l.Id
                             where pd.Pedido.PedidoEnviado >= data
-                            group pd by new { pd.Id , l.Nome , pd.Quantidade } 
+                            group pd by new { pd.Id , l.Nome } 
                             into g 
                             select new{
                                 LancheNome = g.Key.Nome,
